@@ -46,7 +46,7 @@ class _ProductDetails extends StatelessWidget {
     return Container(
       width: double.infinity,
       height: 70,
-      color: Colors.red,
+      color: Colors.indigo,
     );
   }
 }
