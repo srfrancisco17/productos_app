@@ -15,9 +15,12 @@ class ProductsService extends ChangeNotifier {
     this.loadProducts();
   }
 
-  Future loadProducts() async{
-    final url = Uri.https(_baseUrl, 'products.json');
+  Future<List<Product>> loadProducts() async{
 
+    this.isLoading = true;
+    notifyListeners();
+
+    final url = Uri.https(_baseUrl, 'products.json');
     final resp = await http.get(url);
 
     final Map<String, dynamic> productsMap = json.decode(resp.body);
@@ -30,7 +33,12 @@ class ProductsService extends ChangeNotifier {
       this.products.add(tempProduct);
     });
 
-    print(productsMap);
+    this.isLoading = false;
+    notifyListeners();    
+
+    return this.products;
+
+    // print(productsMap);
   }
 
   
