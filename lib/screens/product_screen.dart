@@ -34,6 +34,9 @@ class _ProductScreenBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    final productForm = Provider.of<ProductFormProvider>(context);
+
     return Scaffold(
       body: Center(
         child: SingleChildScrollView(
@@ -55,7 +58,7 @@ class _ProductScreenBody extends StatelessWidget {
                     right: 20,
                     child: IconButton(
                       onPressed: (){
-
+                        
                       }, 
                       icon: Icon(Icons.camera_alt_rounded, size: 40, color: Colors.white)
                     ),
@@ -71,7 +74,11 @@ class _ProductScreenBody extends StatelessWidget {
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.save_alt_outlined),
-        onPressed: (){},
+        onPressed: () async{
+          if (!productForm.isValidForm()) return;
+
+          await productService.saveOrCreateProduct(productForm.product);
+        },
       ),
     );
   }
@@ -93,6 +100,8 @@ class _ProductForm extends StatelessWidget {
         // height: 200,
         decoration: _buildBoxDecoration(),
         child: Form(
+          key: productForm.formKey,
+          autovalidateMode: AutovalidateMode.onUserInteraction,
           child: Column(
             children: [
               SizedBox(height: 10),
