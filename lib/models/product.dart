@@ -37,6 +37,7 @@ class Product {
       available: available,
       name: name,
       price: price,
-      id: this.id
+      picture: picture,
+      id: id
     );
 }
