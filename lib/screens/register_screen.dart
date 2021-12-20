@@ -114,23 +114,26 @@ class _LoginForm extends StatelessWidget {
               disabledColor: Colors.grey,
               elevation: 0,
               color: Colors.deepPurple,
-              onPressed: loginForm.isLoading ? null : () async{
+              onPressed: loginForm.isLoading ? null : () async {
+                
                 FocusScope.of(context).unfocus();
                 final authService = Provider.of<AuthService>(context, listen: false);
-
-                if(!loginForm.isValidForm()) return;
+                
+                if( !loginForm.isValidForm() ) return;
 
                 loginForm.isLoading = true;
 
+
+                // TODO: validar si el login es correcto
                 final String? errorMessage = await authService.createUser(loginForm.email, loginForm.password);
-                
-                if(errorMessage == null){
+
+                if ( errorMessage == null ) {
                   Navigator.pushReplacementNamed(context, 'home');
-                }else{
-                  print(errorMessage);
+                } else {
+                  // TODO: mostrar error en pantalla
+                  print( errorMessage );
                   loginForm.isLoading = false;
                 }
-
               },
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 80, vertical: 15),
