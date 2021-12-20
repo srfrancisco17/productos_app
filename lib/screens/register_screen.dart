@@ -128,9 +128,8 @@ class _LoginForm extends StatelessWidget {
                   Navigator.pushReplacementNamed(context, 'home');
                 }else{
                   print(errorMessage);
+                  loginForm.isLoading = false;
                 }
-
-                loginForm.isLoading = false;
 
               },
               child: Container(
