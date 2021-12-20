@@ -7,6 +7,7 @@ import 'package:productos_app/screens/screens.dart';
 import 'package:productos_app/services/services.dart';
 import 'package:productos_app/ui/input_decorations.dart';
 import 'package:provider/provider.dart';
+import 'package:image_picker/image_picker.dart';
 
 class ProductScreen extends StatelessWidget {
 
@@ -57,8 +58,19 @@ class _ProductScreenBody extends StatelessWidget {
                     top: 60,
                     right: 20,
                     child: IconButton(
-                      onPressed: (){
-                        
+                      onPressed: () async{
+                        final picker = ImagePicker();
+                        final PickedFile? pickedFile = await picker.getImage(
+                          // source: ImageSource.camera,
+                          source: ImageSource.gallery,
+                          imageQuality: 100
+                        );
+
+                        if(pickedFile == null){
+                          return;
+                        }
+                        productService.updateSelectedProductImage(pickedFile.path);
+
                       }, 
                       icon: Icon(Icons.camera_alt_rounded, size: 40, color: Colors.white)
                     ),
@@ -73,9 +85,15 @@ class _ProductScreenBody extends StatelessWidget {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.save_alt_outlined),
-        onPressed: () async{
+        child: productService.isSaving ? CircularProgressIndicator(color: Colors.white) : Icon(Icons.save_alt_outlined),
+        onPressed: productService.isSaving ? null : () async{
           if (!productForm.isValidForm()) return;
+
+          final String? imageUrl = await productService.uploadImage();
+
+          // print(imageUrl);
+
+          if( imageUrl != null) productForm.product.picture = imageUrl;
 
           await productService.saveOrCreateProduct(productForm.product);
         },

@@ -4,3 +4,4 @@ export 'package:productos_app/screens/product_screen.dart';
 export 'package:productos_app/widgets/product_image.dart';
 export 'package:productos_app/screens/loading_screen.dart';
 export 'package:productos_app/services/products_service.dart';
+export 'package:productos_app/screens/register_screen.dart';
